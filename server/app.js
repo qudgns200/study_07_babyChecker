@@ -1,22 +1,29 @@
 const express = require('express')
 const app = express();
-const port = process.env.PORT || 3000;
-const mysql = require('mysql');
-const dbconfig = require('./db.js');
-const connection = mysql.createConnection(dbconfig);
+const port = process.env.PORT || 8080;
 
-app.get('/', (req, res) =>
-    res.send('Hello World!')
-);
+// Cors Set.
+// HTTP  헤더에 따른 접근 권한 관리 체제
+const cors = require('cors');
+app.use(cors());
 
-app.get('/test', (req, res) =>
-    connection.query('SELECT * from information', (error, rows, fields) => {
-    if (error) throw error;
-    console.log('information is: ', rows);
-    res.send(rows);
-  })
-);
+// const dotenv = require('dotenv').config();
+// const mysqlConObj = require('./config/dbConfig');
+// const db = mysqlConObj.init();
+// mysqlConObj.open(db);
+
+// RESTful API route For DB
+app.use('/', require('./routes/route'));
+
+// DB Connection
+const db = require('./model/index');
+db.sequelizeConfig.sync();
+
+// Default route for server status
+app.get('/', (req, res) => {
+    res.send('Server is running on port' + port);
+  });
 
 app.listen(port, () => 
-    console.log('Express server listening on port ' + app.get('port'))
+    console.log('Express server listening on port ' + port)
 );
