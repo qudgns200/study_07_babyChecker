@@ -15,3 +15,25 @@ exports.findOne = (req, res) => {
         }
     }).then(data => res.send(data));
 };
+
+exports.create = (req, res) => {
+    Information.create(req.params).then(function(result) {
+        res.json(result);
+    })
+}
+
+exports.update = (req, res) => {
+    Information.update(req.params).then(function(result) {
+        res.json(result[1][0]);
+    })
+}
+
+exports.delete = (req, res) => {
+    Information.delete({
+        where: {
+            id:req.params.id
+        }
+    }).then(function(result) {
+        res.json();
+    })
+}

@@ -8,4 +8,6 @@ router.get('/api/information', information.findAll);
 // selectOne information
 router.get('/api/information/:id', information.findOne);
 
+router.post('/api/information/add', information.update);
+
 module.exports = router;
